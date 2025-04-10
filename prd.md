@@ -28,11 +28,29 @@ It's a way for you to easily habit stack learning something new everyday through
 
 ## User Stories
 1. As a user, I can input the podcast that I want to listen to so that it can generate a podcast.
+   - The user sees a clean, minimal interface with a prominent text input field. The input field has placeholder text suggesting example prompts like "Tell me about the latest developments in quantum computing" or "Explain the history of the Roman Empire in an engaging way". A "Generate Podcast" button is clearly visible below the input field.
 2. As a user, I want the ability to use the mic to input what I want to listen to.
+   - A microphone icon button is positioned next to the text input field. When clicked, it activates the device's microphone with a visual indicator (pulsing animation) showing recording is in progress. The app provides clear feedback when it's listening and when it's processing the speech. The transcribed text appears in the input field, and users can edit it before generating the podcast.
 3. As a user, I want to log in with Google so I can sign into my account.
+   - A "Sign in with Google" button is prominently displayed on the landing page. The authentication flow is seamless, with a loading indicator while the process completes. After successful login, the user's profile picture appears in the top right corner, and they have access to their podcast history.
 4. As a user, I want to know the status of the podcast generation so I know when it is ready.
+   - After submitting a podcast request, users see a progress indicator in their list of podcasts they can listen to
+   - In the list of podcasts, they block that stores the podcast information should say "Generating" instead of the actual
+   component. When it finishes processing, it should show.
 5. As a user, I want to be able to play a podcast through an audio player.
+   - The audio player features a modern, intuitive interface with:
+     - Play/pause button
+     - Progress bar with time indicators
+     - Volume control
+     - Playback speed options (0.5x to 2x)
+     - Skip forward/backward buttons (15 seconds)
+    - On the page with the list of podcasts a user can listen to, pressing on the component will start playing the podcast
+   The player remains fixed at the bottom of the screen while scrolling through other content.
 6. As a user, I want to see a history of the podcasts I've generated.
+   - Description: The history page displays podcasts in a grid/list view with:
+     - Title
+     - Generation date
+     - Duration
 
 ## Podcast Model
 ```sql
@@ -119,6 +137,7 @@ Retrieves a specific podcast by its ID.
 
 ### 5. Implement Create Podcast Tab
 - Test e2e functionality of storing user generated podcasts
+- Create tRPC methods for podcast
 
 ### 6. Init Serverless Function
 - Test that it can take in params
