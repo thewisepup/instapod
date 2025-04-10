@@ -1,136 +1,151 @@
-#Summary
-AI Podcast Generator is an app that lets you generate 20 minute podcasts during the time you have where you can multi task like driving to work, doing laundry, doing dishes, or on a walk. Just say what kind of podcast you want to listen to and it’ll generate that for you. You can ask about current events in the news, a new skill you want to learn, facts about history, and so much more. It’s a way for you to easily habit stack learning something new everyday through a podcast.
+# AI Podcast Generator
 
-#Tech Stack
-We will be using NextJS as our frontend framework. 
-We will deploy the application using Vercel. 
-We will be using Supabase as our backend framework. We will leverage their Authentication, Database, File Storage, and Serverless 
-The AI model provider to generate podcast script is TBD
-The TTS provider to voice the podcast is TBD
+## Summary
+AI Podcast Generator is an app that lets you generate 20-minute podcasts during times when you can multitask, such as:
+- Driving to work
+- Doing laundry
+- Doing dishes
+- Going for a walk
 
-#User Stories
-##As a user, I can input the podcast that I want to listen to so that it can generate a podcast.
-##As a user, I want the ability to use the mic to input what i want to listen to
-##As a user, I want to log in with google so i can sign into my account
-##As a user, I want to know the status of the podcast generation so I know when it is ready
-##As a user, I want to be able to play a podcast through an audio player
-##As a user, I want to so a history of the podcasts I’ve generated
+Just say what kind of podcast you want to listen to and it'll generate that for you. You can ask about:
+- Current events in the news
+- New skills you want to learn
+- Historical facts
+- And much more
 
+It's a way for you to easily habit stack learning something new everyday through a podcast.
 
-#Podcast model
-Podcast_id (pk)
-User_id (fk)
-Podcast_status (generating, deleted, created)
-title
-Created_at
-Last_updated
-user_prompt
-configs….
+## Tech Stack
+- **Frontend Framework**: NextJS
+- **Deployment**: Vercel
+- **Backend Framework**: Supabase
+  - Authentication
+  - Database
+  - File Storage
+  - Serverless Functions
+- **AI Model Provider**: TBD (for podcast script generation)
+- **TTS Provider**: TBD (for podcast voicing)
 
-#tRPC methods
-##generatePodcast(inputText)
-This API calls the serverless function that generates the podcast.
-It firsts creates a new podcast with a generating status then calls the serverless function
+## User Stories
+1. As a user, I can input the podcast that I want to listen to so that it can generate a podcast.
+2. As a user, I want the ability to use the mic to input what I want to listen to.
+3. As a user, I want to log in with Google so I can sign into my account.
+4. As a user, I want to know the status of the podcast generation so I know when it is ready.
+5. As a user, I want to be able to play a podcast through an audio player.
+6. As a user, I want to see a history of the podcasts I've generated.
 
-#getPodcastStatusByPodcastId(podcastId)
-This will be used to get the status of a podcast. This method will be used
-when we need to poll on the status of podcast generation
+## Podcast Model
+```sql
+Podcast {
+  podcast_id (pk)
+  user_id (fk)
+  podcast_status (generating, deleted, created)
+  title
+  created_at
+  last_updated
+  user_prompt
+  configs
+}
+```
 
-#getPodcastsByUserId(userId)
-This will be used to get a list of podcasts a user can listen to
+## tRPC Methods
 
-#getPodcastByPodcastId(podcastId)
+### generatePodcast(inputText)
+This API calls the serverless function that generates the podcast. It first creates a new podcast with a generating status then calls the serverless function.
 
+### getPodcastStatusByPodcastId(podcastId)
+This will be used to get the status of a podcast. This method will be used when we need to poll on the status of podcast generation.
 
-#Generate Podcast Workflow
+### getPodcastsByUserId(userId)
+This will be used to get a list of podcasts a user can listen to.
 
-##User calls exposed api called generatePodcast(inputText)
-Generates a podcast entry and returns podcastID
+### getPodcastByPodcastId(podcastId)
+Retrieves a specific podcast by its ID.
 
-Triggers a serverless function with podcastId, inputText params
+## Generate Podcast Workflow
 
-Given text input, utilize AI model that can search the web to generate a 20 minute podcast script between two hosts
+1. User calls exposed API called `generatePodcast(inputText)`
+   - Generates a podcast entry and returns podcastID
+   - Triggers a serverless function with podcastId, inputText params
 
-Create an PodcastScriptGenerator interface where we can use OpenAI, Claude, or Gemini models, but keep interface. THis is important to test different models
+2. Given text input, utilize AI model that can search the web to generate a 20-minute podcast script between two hosts
+   - Create a PodcastScriptGenerator interface where we can use OpenAI, Claude, or Gemini models
+   - Look up good prompts to use
+   - Consider doing a pre-step to extract podcast title, goals, etc.
+   - Consider adding DB call to update podcast title based on this
+   - Need to figure out which AI model works best
 
-Look up good prompts to use
+3. Given the podcast script, pass it to `generatePodcastAudio(podcastScript)` for text-to-speech
+   - Consider breaking it up into multiple steps
+   - Create an interface that can utilize multiple TTS providers (elevenlabs, speechify, etc.)
 
-Consider doing a pre-step to this by taking the user input to extract out things like podcast title, goals, etc
+4. Stitch audio clips together
+5. Store image into blob storage/CDN
+6. Update podcast status and podcast location
 
-Consider adding DB call to update podcast title based off this
+## UI Mock Up
 
-Need to figure out which AI model works best
+### Header
+- Logo top left
+- Center AI Podcast
+- Settings/user info top right
 
-#Given the podcast script, pass it to generatePodcastAudio(podcastScript) and have it generate text to speech
+### Top of Page
+- Create Podcast button
+- Listen To Podcast button
 
-Consider using breaking it up into multiple steps
+### Create Podcast Tab
+- Input box (default text: "Describe what you want in details with example")
+- Mic icon to toggle mic mode
+- Generate Podcast button
+- On click generate: toast or modal pops up and moves to Listen To Podcast tab
 
-Create an interface that can utilize multiple TTS providers (elevenlabs, speechify, etc)
+## Milestones
 
-#Stitch audio clips together
-#Store image into blob storage/CDN
-#Update podcast status and podcast location
+### 1. Init Project
+- Set up GitHub
+- Set up NextJS
+- Set up Vercel
 
-#UI Mock Up
+### 2. Create UI Skeleton
+- Create mockup
+- Generate UI with stubbed functionality
 
-##Header
-Logo top left
-Center AI Podcast
-Settings/user info top right
+### 3. Integrate with Auth Provider
+- SSO implementation
 
-#Top of page, 2 buttons
-Create Podcast
-Listen To Podcast
+### 4. Integrate Database/Backend Framework
+- Create user table and podcast table
 
-#Create Podcast Tab
-Input box (default text says describe what you want in details w example)
-Mic icon to toggle mic mode
-Generate Podcast button
-onClick generate, toast or modal pops up and it moves you to Listen To Podcast tab. We should see the recent input be generated
+### 5. Implement Create Podcast Tab
+- Test e2e functionality of storing user generated podcasts
 
+### 6. Init Serverless Function
+- Test that it can take in params
+- Update podcast status
+- Hard code location to be public Cloudfront URL
 
-#Milestones
-##Init project
-Set up github
-Set up nextjs
-Set up vercel
+### 7. Implement Listen To Podcast Tab
+- Test rendering of podcast entries
+- Implement audio player component
 
-##Create UI skeleton
-Create mockup
-Generate UI with stubbed functionality
+### 8. Implement Serverless Function to Generate Podcast
 
-##Integrate with auth provider
-SSO
+#### 8.1 Generate Podcast Script
+- Generate script and title
+- Integrate with AI providers
 
-##Integrate database/backend framework
-Create user table and podcast table
+#### 8.2 Text To Speech Implementation
+- Integrate with TTS provider
 
-##Implement Create Podcast Tab
-Test e2e functionality of storing user generated podcasts
+#### 8.3 Create and Upload Podcast
+- Update podcast status and location
 
-##Init serverless function
-Test that it can take in params, then update podcast status and hard code location to be public Cloudfront url
-
-##Implement Listen To Podcast Tab
-Test that given a bunch of podcast entries, we can render them all with audio player component and have it play stuff
-
-##Implement Serverless function to generate podcast
-
-###Implement functionality to generate podcast script
-Generate script and title
-Integrate with AI providers
-
-### Implement functionality to do Text To Speech on podcast script
-Integrate with TTS provider
-
-###Implement functionality to create podcast and upload to blob storage
-Update podcast status and location
-
-#Future Requirements
-##Stripe integration for payments
-##Paid tiers
-##Limit user to 1 generation per day
-##Daily generated content
-Long running “cron job” auto generated podcasts
-Give app a big topic you want to learn, and everyday it’ll generate you a podcast based on that.
-##Generate different podcast lengths
+## Future Requirements
+- Stripe integration for payments
+- Paid tiers
+- Limit user to 1 generation per day
+- Daily generated content
+  - Long running "cron job" auto generated podcasts
+  - Give app a big topic you want to learn, and everyday it'll generate you a podcast based on that
+- Generate different podcast lengths
