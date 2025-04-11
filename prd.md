@@ -121,13 +121,13 @@ Retrieves a specific podcast by its ID.
 ## Milestones
 
 ### 1. Init Project
-- Set up GitHub
-- Set up NextJS
-- Set up Vercel
+[X] Set up GitHub
+[X] Set up NextJS
+[X] Set up Vercel
 
 ### 2. Create UI Skeleton
-- Create mockup
-- Generate UI with stubbed functionality
+[X] Create mockup
+[X] Generate UI with stubbed functionality
 
 ### 3. Integrate with Auth Provider
 - SSO implementation
