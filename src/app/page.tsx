@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CreatePodcast from "~/components/create-podcast";
+import ListenPodcast from "~/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import type { Podcast } from "~/lib/types";
 
@@ -51,9 +52,9 @@ export default function Home() {
         <TabsContent value="create">
           <CreatePodcast onPodcastGenerated={handlePodcastGenerated} />
         </TabsContent>
-        {/* <TabsContent value="listen">
+        <TabsContent value="listen">
           <ListenPodcast podcasts={podcasts} />
-        </TabsContent> */}
+        </TabsContent>
       </Tabs>
     </main>
   );
