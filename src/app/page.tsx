@@ -1,10 +1,10 @@
 "use client";
 
+import CreatePodcast from "@/components/create-podcast";
 import { useState } from "react";
-import CreatePodcast from "~/components/create-podcast";
-import ListenPodcast from "~/components/listen-podcast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import type { Podcast } from "~/lib/types";
+import ListenPodcast from "@/components/listen-podcast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { Podcast } from "@/lib/types";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);

@@ -1,4 +1,4 @@
-import type { Podcast } from "~/lib/types";
+import type { Podcast } from "@/lib/types";
 
 interface PodcastCardProps {
   podcast: Podcast;

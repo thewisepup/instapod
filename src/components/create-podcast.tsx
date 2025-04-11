@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Loader2 } from "lucide-react";
-import type { Podcast } from "~/lib/types";
 import { Button } from "./ui/button";
+import type { Podcast } from "@/lib/types";
 
 interface CreatePodcastProps {
   onPodcastGenerated: (podcast: Podcast) => void;

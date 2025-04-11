@@ -1,5 +1,5 @@
-import type { Podcast } from "~/lib/types";
-import PodcastCard from "./podcast-card";
+import type { Podcast } from "@/lib/types";
+import PodcastCard from "@components/podcast-card";
 
 interface ListenPodcastProps {
   podcasts: Podcast[];
