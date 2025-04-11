@@ -8,9 +8,9 @@ import {
   SignedOut,
   SignInButton,
   SignUpButton,
-  UserButton,
 } from "@clerk/nextjs";
 import { TRPCReactProvider } from "~/trpc/react";
+import SignedInHeader from "@/components/signed-in-header";
 
 export const metadata: Metadata = {
   title: "AI Podcast",
@@ -32,11 +32,11 @@ export default function RootLayout({
         <body>
           <header className="flex h-16 items-center justify-end gap-4 p-4">
             <SignedOut>
-              <SignInButton />
-              <SignUpButton />
+              {/* <SignInButton />
+              <SignUpButton /> */}
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <SignedInHeader />
             </SignedIn>
           </header>
           <TRPCReactProvider>{children}</TRPCReactProvider>
