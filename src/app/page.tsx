@@ -5,16 +5,30 @@ import { useState } from "react";
 import ListenPodcast from "@/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Podcast } from "@/lib/types";
+import { useUser } from "@clerk/nextjs";
+import LandingPage from "~/components/landing-page";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [activeTab, setActiveTab] = useState("create");
-
+  const { isSignedIn, user, isLoaded } = useUser();
   const handlePodcastGenerated = (podcast: Podcast) => {
     setPodcasts((prev) => [podcast, ...prev]);
     setActiveTab("listen");
   };
 
+  if (!isLoaded) {
+    //TODO: Implement app wide loader
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (!isSignedIn) {
+    return <LandingPage />;
+  }
   return (
     <main className="container mx-auto px-4 py-6">
       <header className="mb-8 flex items-center justify-between">
