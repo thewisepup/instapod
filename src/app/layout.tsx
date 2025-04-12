@@ -6,7 +6,8 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import { TRPCReactProvider } from "~/trpc/react";
 import SignedInHeader from "@/components/signed-in-header";
 import { SignIn } from "@/components/sign-in";
-import { SignUp } from "~/components/sign-up";
+import { SignUp } from "@/components/sign-up";
+import AppLogo from "@/components/app-logo";
 
 export const metadata: Metadata = {
   title: "AI Podcast",
@@ -26,10 +27,15 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
-          <header className="flex h-16 items-center justify-end gap-4 p-4">
+          <header className="flex h-16 items-center justify-between px-6">
             <SignedOut>
-              <SignIn />
-              <SignUp />
+              <div className="flex items-center">
+                <AppLogo />
+              </div>
+              <div className="flex items-center gap-2">
+                <SignIn />
+                <SignUp />
+              </div>
             </SignedOut>
             <SignedIn>
               <SignedInHeader />
