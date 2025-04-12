@@ -1,4 +1,5 @@
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignUpButton } from "@clerk/nextjs";
+import { SignIn } from "./sign-in";
 
 export default function LandingPage() {
   return (
@@ -13,7 +14,7 @@ export default function LandingPage() {
         </p>
       </div>
       <div className="flex gap-4">
-        <SignInButton />
+        <SignIn />
         <SignUpButton />
       </div>
     </div>

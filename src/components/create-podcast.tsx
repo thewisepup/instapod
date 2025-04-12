@@ -23,13 +23,13 @@ export default function CreatePodcast({
     setTimeout(() => {
       const newPodcast: Podcast = {
         id: Date.now().toString(),
-        title: prompt.length > 30 ? `${prompt.substring(0, 30)}...` : prompt,
+        title: prompt.length > 30 ? `${prompt.substring(0, 60)}...` : prompt,
         description: prompt,
         createdAt: new Date().toISOString(),
         duration: "10:00", // Placeholder duration
         audioUrl: "/placeholder-audio.mp3", // Placeholder URL
       };
-
+      //TODO Call API to generate podcast
       setIsGenerating(false);
       setPrompt("");
       onPodcastGenerated(newPodcast);
@@ -40,7 +40,11 @@ export default function CreatePodcast({
     <div className="space-y-6">
       <div className="relative">
         <Textarea
-          placeholder="Describe what you want in details with example (e.g., 'Tell me about the latest developments in quantum computing')"
+          placeholder="Describe what you want in details with example 
+          (e.g., 'Tell me about the latest developments with the Trump 
+          tariffs and how it will my clothing business. 
+          I want to understand how it will affect costs, supply chain, 
+          and pricing for my customers.')"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           className="min-h-[200px]"
