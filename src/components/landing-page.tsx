@@ -1,6 +1,3 @@
-import { SignUpButton } from "@clerk/nextjs";
-import { SignIn } from "./sign-in";
-
 export default function LandingPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-8 px-4 text-center">
@@ -14,8 +11,7 @@ export default function LandingPage() {
         </p>
       </div>
       <div className="flex gap-4">
-        <SignIn />
-        <SignUpButton />
+        {/* TODO Add Email Waitlist Component */}
       </div>
     </div>
   );
