@@ -27,20 +27,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
-          <header className="flex h-16 items-center justify-between px-6">
-            <SignedOut>
-              <div className="flex items-center">
-                <AppLogo />
-              </div>
-              <div className="flex items-center gap-2">
-                <SignIn />
-                <SignUp />
-              </div>
-            </SignedOut>
+            <SignedOut></SignedOut>
             <SignedIn>
               <SignedInHeader />
             </SignedIn>
-          </header>
+
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </body>
       </html>

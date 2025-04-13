@@ -1,20 +1,36 @@
 import { Waitlist } from "@clerk/nextjs";
+import AppLogo from "./app-logo";
+import { SignIn } from "./sign-in";
+import { SignUp } from "./sign-up";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-8 px-4 text-center">
-      <div className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          Create AI-Powered Podcasts
-        </h1>
-        <p className="text-muted-foreground mx-auto max-w-[700px] text-lg">
-          Generate engaging podcasts with the power of AI. Sign in to start
-          creating your own content.
-        </p>
-      </div>
-      <div className="flex gap-4">
-        <Waitlist />
-      </div>
+    <div>
+      <header className="flex items-center justify-between px-4 py-4">
+        <div className="flex items-center gap-4">
+          <AppLogo />
+          <div className="text-2xl font-bold">InstaPod</div>
+        </div>
+        <div className="flex items-center gap-4">
+          <SignIn />
+          <SignUp />
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-16 text-center">
+        <div className="space-y-6">
+          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            Create AI-Powered Podcasts
+          </h2>
+          <p className="text-muted-foreground mx-auto max-w-[700px] text-lg sm:text-xl">
+            Just describe what you want to listen to, and InstaPod creates a
+            personalized podcast for you in seconds.
+          </p>
+        </div>
+        <div className="mt-12 flex justify-center">
+          <Waitlist />
+        </div>
+      </main>
     </div>
   );
 }
