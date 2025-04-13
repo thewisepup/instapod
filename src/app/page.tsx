@@ -53,7 +53,7 @@ export default function Home() {
           <ListenPodcast podcasts={podcasts} />
         </TabsContent>
       </Tabs>
-      {data && (
+      {/* {data && (
         <div className="mt-8 rounded-lg bg-gray-100 p-4">
           <p className="text-lg">{data.greeting}</p>
         </div>
@@ -73,7 +73,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </main>
   );
 }

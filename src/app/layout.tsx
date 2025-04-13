@@ -10,7 +10,7 @@ import { SignUp } from "@/components/sign-up";
 import AppLogo from "@/components/app-logo";
 
 export const metadata: Metadata = {
-  title: "AI Podcast",
+  title: "InstaPod",
   description: "Create AI-Powered Podcasts",
   // icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
