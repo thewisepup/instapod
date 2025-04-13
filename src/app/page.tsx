@@ -4,15 +4,23 @@ import CreatePodcast from "@/components/create-podcast";
 import { useState } from "react";
 import ListenPodcast from "@/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Podcast } from "@/lib/types";
+import { podcast } from "@/server/db/schema";
 import { useUser } from "@clerk/nextjs";
 import LandingPage from "~/components/landing-page";
+import { api } from "~/trpc/react";
+import type { Podcast } from "~/lib/types";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [activeTab, setActiveTab] = useState("create");
-  const { isSignedIn, isLoaded } = useUser();
-
+  const { isSignedIn, isLoaded, user } = useUser();
+  const { data } = api.podcast.hello.useQuery({
+    text: user?.id ?? "",
+  });
+  const { data: userPodcasts } = api.podcast.getPodcasts.useQuery({
+    userId: user?.id ?? "",
+  });
+  console.log(userPodcasts);
   const handlePodcastGenerated = (podcast: Podcast) => {
     setPodcasts((prev) => [podcast, ...prev]);
     setActiveTab("listen");
@@ -30,6 +38,7 @@ export default function Home() {
   if (!isSignedIn) {
     return <LandingPage />;
   }
+
   return (
     <main className="container mx-auto px-4 py-12">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -44,6 +53,27 @@ export default function Home() {
           <ListenPodcast podcasts={podcasts} />
         </TabsContent>
       </Tabs>
+      {data && (
+        <div className="mt-8 rounded-lg bg-gray-100 p-4">
+          <p className="text-lg">{data.greeting}</p>
+        </div>
+      )}
+      {userPodcasts && (
+        <div className="mt-8 rounded-lg bg-gray-100 p-4">
+          <div className="space-y-4">
+            {userPodcasts.map((podcast) => (
+              <div key={podcast.id} className="flex justify-between">
+                <p className="text-lg">{podcast.title}</p>
+                <p className="text-gray-600">
+                  {podcast.created_at
+                    ? new Date(podcast.created_at).toLocaleDateString()
+                    : "No date available"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
