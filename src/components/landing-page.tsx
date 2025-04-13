@@ -20,11 +20,11 @@ export default function LandingPage() {
       <main className="container mx-auto px-4 py-16 text-center">
         <div className="space-y-6">
           <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Create AI-Powered Podcasts
+            Create Your AI-Powered Podcast
           </h2>
           <p className="text-muted-foreground mx-auto max-w-[700px] text-lg sm:text-xl">
-            Just describe what you want to listen to, and InstaPod creates a
-            personalized podcast for you in seconds.
+            Just describe what you want to hear. InstaPod creates a
+            personalized podcast just for you.
           </p>
         </div>
         <div className="mt-12 flex justify-center">
