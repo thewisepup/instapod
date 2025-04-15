@@ -5,8 +5,8 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { podcast } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+
+import { getPodcastsByUserId } from "~/server/db/repositories/podcast-repo";
 
 export const podcastRouter = createTRPCRouter({
   hello: publicProcedure.query(({ ctx }) => {
@@ -21,13 +21,7 @@ export const podcastRouter = createTRPCRouter({
   }),
   getPodcasts: protectedProcedure
     .input(z.object({ userId: z.string() }))
-    .query(async ({ input, ctx }) => {
-      //TODO: add auth to verify userId has access to podcast or use context for auth
-      const podcasts = await ctx.db
-        .select()
-        .from(podcast)
-        .where(eq(podcast.user_id, input.userId));
-
-      return podcasts;
+    .query(async ({ ctx }) => {
+      return await getPodcastsByUserId(ctx.auth.userId!);
     }),
 });
