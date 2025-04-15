@@ -4,23 +4,15 @@ import CreatePodcast from "@/components/create-podcast";
 import { useState } from "react";
 import ListenPodcast from "@/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { podcast } from "@/server/db/schema";
 import { useUser } from "@clerk/nextjs";
 import LandingPage from "~/components/landing-page";
-import { api } from "~/trpc/react";
 import type { Podcast } from "~/lib/types";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [activeTab, setActiveTab] = useState("create");
-  const { isSignedIn, isLoaded, user } = useUser();
-  const { data } = api.podcast.hello.useQuery({
-    text: user?.id ?? "",
-  });
-  const { data: userPodcasts } = api.podcast.getPodcasts.useQuery({
-    userId: user?.id ?? "",
-  });
-  console.log(userPodcasts);
+  const { isSignedIn, isLoaded } = useUser();
+
   const handlePodcastGenerated = (podcast: Podcast) => {
     setPodcasts((prev) => [podcast, ...prev]);
     setActiveTab("listen");
