@@ -15,6 +15,7 @@ export const podcastRouter = createTRPCRouter({
   getPodcasts: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {
+      //TODO: add auth to verify userId has access to podcast or use context for auth
       const podcasts = await ctx.db
         .select()
         .from(podcast)

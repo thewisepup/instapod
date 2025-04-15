@@ -6,7 +6,8 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { auth } from "@clerk/nextjs/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -27,6 +28,7 @@ import { db } from "~/server/db";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
+    auth: await auth(),
     ...opts,
   };
 };
@@ -97,6 +99,25 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 /**
+ * Middleware to ensure requests are authenticated.
+ *
+ * This middleware checks if there is a valid userId in the auth context. If not, it throws
+ * an UNAUTHORIZED error. Use this with procedures that should only be accessible to logged-in users
+ * by creating a protectedProcedure.
+ *
+ * @see https://clerk.com/docs/references/nextjs/trpc
+ */
+
+const isAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: ctx,
+  });
+});
+
+/**
  * Public (unauthenticated) procedure
  *
  * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
@@ -104,3 +125,16 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+/**
+ * Protected (authenticated) procedure
+ *
+ * This is the base procedure for queries and mutations that require authentication. It extends
+ * the base procedure with the isAuthed middleware, which verifies that the user is logged in
+ * before allowing the request to proceed.
+ *
+ * If the user is not authenticated, it will throw a TRPC UNAUTHORIZED error.
+ *
+ * @see isAuthed middleware above
+ */
+export const protectedProcedure = t.procedure.use(isAuthed);
