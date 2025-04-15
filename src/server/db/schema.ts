@@ -13,20 +13,6 @@ import { uuid, text, timestamp } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `ai-podcast_${name}`);
 
-export const posts = createTable(
-  "post",
-  (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-  }),
-  (t) => [index("name_idx").on(t.name)],
-);
-
 export const podcast = pgTable("podcast", {
   id: uuid("id").defaultRandom().primaryKey(),
   user_id: text("user_id").notNull(),
