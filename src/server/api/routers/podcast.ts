@@ -1,3 +1,4 @@
+import { getPodcastsByUserId } from "@repositories/podcast-repo";
 import { z } from "zod";
 
 import {
@@ -5,8 +6,6 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-
-import { getPodcastsByUserId } from "~/server/db/repositories/podcast-repo";
 
 export const podcastRouter = createTRPCRouter({
   hello: publicProcedure.query(({ ctx }) => {
