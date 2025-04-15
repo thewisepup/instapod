@@ -19,10 +19,10 @@ It's a way for you to easily habit stack learning something new everyday through
 - **Frontend Framework**: NextJS
 - **Deployment**: Vercel
 - **Backend Framework**: Supabase
-  - Authentication
   - Database
   - File Storage
   - Serverless Functions
+- **Auth Provider Provider**: Clerk
 - **AI Model Provider**: TBD (for podcast script generation)
 - **TTS Provider**: TBD (for podcast voicing)
 
@@ -45,6 +45,7 @@ It's a way for you to easily habit stack learning something new everyday through
      - Playback speed options (0.5x to 2x)
      - Skip forward/backward buttons (15 seconds)
     - On the page with the list of podcasts a user can listen to, pressing on the component will start playing the podcast
+    - The podcast player should be a global component. Any page or tab a user goes to should show the podcast player.
    The player remains fixed at the bottom of the screen while scrolling through other content.
 6. As a user, I want to see a history of the podcasts I've generated.
    - Description: The history page displays podcasts in a grid/list view with:
@@ -130,7 +131,7 @@ Retrieves a specific podcast by its ID.
 [X] Generate UI with stubbed functionality
 
 ### 3. Integrate with Auth Provider
-- SSO implementation
+[X] SSO implementation
 
 ### 4. Integrate Database/Backend Framework
 - Create user table and podcast table
