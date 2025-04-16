@@ -134,11 +134,11 @@ Retrieves a specific podcast by its ID.
 [X] SSO implementation
 
 ### 4. Integrate Database/Backend Framework
-- Create user table and podcast table
+[X] Create user table and podcast table
 
 ### 5. Implement Create Podcast Tab
-- Test e2e functionality of storing user generated podcasts
-- Create tRPC methods for podcast
+[X] Test e2e functionality of storing user generated podcasts
+[X] Create tRPC methods for podcast
 
 ### 6. Init Serverless Function
 - Test that it can take in params
