@@ -13,8 +13,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("create");
   const { isSignedIn, isLoaded } = useUser();
 
-  const handlePodcastGenerated = (podcast: Podcast) => {
-    setPodcasts((prev) => [podcast, ...prev]);
+  const handlePodcastGenerated = () => {
     setActiveTab("listen");
   };
 

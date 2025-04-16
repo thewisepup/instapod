@@ -4,37 +4,31 @@ import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
-import type { Podcast } from "@/lib/types";
+import { api } from "@/trpc/react";
 
 interface CreatePodcastProps {
-  onPodcastGenerated: (podcast: Podcast) => void;
+  onPodcastGenerated: () => void;
 }
 
 export default function CreatePodcast({
   onPodcastGenerated,
 }: CreatePodcastProps) {
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const { mutate: createPodcast } = api.podcast.createPodcast.useMutation({
+    onSuccess: () => {
+      setIsGenerating(false);
+      onPodcastGenerated();
+    },
+    onError: () => {
+      setIsGenerating(false);
+    },
+  });
 
   const handleGeneratePodcast = async () => {
     setIsGenerating(true);
-
-    // Simulate podcast generation
-    setTimeout(() => {
-      // const newPodcast: Podcast = {
-      //   id: Date.now().toString(),
-      //   title: prompt.length > 30 ? `${prompt.substring(0, 60)}...` : prompt,
-      //   userDescription: prompt,
-      //   createdAt: new Date(),
-      //   userId: "",
-      //   status: "GENERATING",
-      //   updatedAt: undefined
-      // };
-      //TODO Call API to generate podcast
-      setIsGenerating(false);
-      setPrompt("");
-      // onPodcastGenerated(new Pod);
-    }, 2000);
+    createPodcast({ userDescription: prompt });
   };
 
   return (

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
-import { podcasts } from "../schema/podcasts";
+import { PodcastStatus, podcasts } from "../schema/podcasts";
 
 export const getPodcastsByUserId = async (userId: string) => {
   const userPodcasts = await db
@@ -10,4 +10,20 @@ export const getPodcastsByUserId = async (userId: string) => {
     .orderBy(podcasts.createdAt);
 
   return userPodcasts;
+};
+
+export const createPodcast = async (
+  userId: string,
+  user_description: string,
+) => {
+  const [podcast] = await db
+    .insert(podcasts)
+    .values({
+      userId: userId,
+      userDescription: user_description,
+      status: PodcastStatus.GENERATING,
+    })
+    .returning();
+
+  return podcast;
 };
