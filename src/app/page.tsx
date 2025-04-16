@@ -6,7 +6,7 @@ import ListenPodcast from "@/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@clerk/nextjs";
 import LandingPage from "~/components/landing-page";
-import type { Podcast } from "~/lib/types";
+import type { Podcast } from "@lib/types";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);

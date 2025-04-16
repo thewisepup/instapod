@@ -1,15 +1,4 @@
-import type { inferRouterOutputs } from "@trpc/server";
-import type { AppRouter } from "~/server/api/root";
+import { type InferSelectModel } from "drizzle-orm";
+import type { podcasts } from "@/server/db/schema/podcasts";
 
-//TODO: Delete this types file
-export interface Podcast {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  duration: string;
-  audioUrl: string;
-}
-
-type RouterOutput = inferRouterOutputs<AppRouter>;
-type Podcasts = RouterOutput["podcast"]["getPodcasts"]; // inferred as User[]
+export type Podcast = InferSelectModel<typeof podcasts>;

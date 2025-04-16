@@ -1,7 +1,13 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
-import { podcast } from "../schema";
+import { podcasts } from "../schema/podcasts";
 
 export const getPodcastsByUserId = async (userId: string) => {
-  return await db.select().from(podcast).where(eq(podcast.user_id, userId));
+  const userPodcasts = await db
+    .select()
+    .from(podcasts)
+    .where(eq(podcasts.userId, userId))
+    .orderBy(podcasts.createdAt);
+
+  return userPodcasts;
 };
