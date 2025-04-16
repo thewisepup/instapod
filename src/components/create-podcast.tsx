@@ -21,18 +21,19 @@ export default function CreatePodcast({
 
     // Simulate podcast generation
     setTimeout(() => {
-      const newPodcast: Podcast = {
-        id: Date.now().toString(),
-        title: prompt.length > 30 ? `${prompt.substring(0, 60)}...` : prompt,
-        description: prompt,
-        createdAt: new Date().toISOString(),
-        duration: "10:00", // Placeholder duration
-        audioUrl: "/placeholder-audio.mp3", // Placeholder URL
-      };
+      // const newPodcast: Podcast = {
+      //   id: Date.now().toString(),
+      //   title: prompt.length > 30 ? `${prompt.substring(0, 60)}...` : prompt,
+      //   userDescription: prompt,
+      //   createdAt: new Date(),
+      //   userId: "",
+      //   status: "GENERATING",
+      //   updatedAt: undefined
+      // };
       //TODO Call API to generate podcast
       setIsGenerating(false);
       setPrompt("");
-      onPodcastGenerated(newPodcast);
+      // onPodcastGenerated(new Pod);
     }, 2000);
   };
 
