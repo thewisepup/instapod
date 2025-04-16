@@ -10,7 +10,17 @@ export const podcastRouter = createTRPCRouter({
   createPodcast: protectedProcedure
     .input(z.object({ userDescription: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      return await createPodcast(ctx.auth.userId!, input.userDescription);
+      console.log(
+        `[Podcast Generation] Starting generation for user: ${ctx.auth.userId}`,
+      );
+      const podcast = await createPodcast(
+        ctx.auth.userId!,
+        input.userDescription,
+      );
+      console.log(
+        `[Podcast Generation] Successfully created podcast with ID: ${podcast?.id} for user: ${ctx.auth.userId}`,
+      );
+      return podcast;
       //TODO: call serverless function to kick off podcast generation process
     }),
 });
