@@ -1,17 +1,17 @@
 import type { Podcast } from "@/lib/types";
+import { useAudioPlayer } from "@/components/audio-player";
 
 interface PodcastCardProps {
   podcast: Podcast;
 }
 
 export default function PodcastCard({ podcast }: PodcastCardProps) {
+  const { clickPodcastCard } = useAudioPlayer();
+
   return (
     <div
-      className="flex items-center gap-3 rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md"
-      onClick={() => {
-        // Implement play functionality
-        console.log("Playing podcast:", podcast.title);
-      }}
+      className="flex cursor-pointer items-center gap-3 rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md"
+      onClick={() => clickPodcastCard(podcast)}
     >
       <button
         className="rounded-full bg-blue-500 p-2 text-white transition-colors hover:bg-blue-600"

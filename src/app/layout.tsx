@@ -8,6 +8,7 @@ import SignedInHeader from "@/components/signed-in-header";
 import { SignIn } from "@/components/sign-in";
 import { SignUp } from "@/components/sign-up";
 import AppLogo from "@/components/app-logo";
+import { AudioPlayerProvider } from "@/components/audio-player";
 
 export const metadata: Metadata = {
   title: "InstaPod",
@@ -27,12 +28,14 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
-          <SignedOut></SignedOut>
-          <SignedIn>
-            <SignedInHeader />
-          </SignedIn>
+          <AudioPlayerProvider>
+            <SignedOut></SignedOut>
+            <SignedIn>
+              <SignedInHeader />
+            </SignedIn>
 
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </AudioPlayerProvider>
         </body>
       </html>
     </ClerkProvider>
