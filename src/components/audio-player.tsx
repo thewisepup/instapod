@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 interface AudioPlayerContextType {
   currentPodcast: Podcast | null;
   isPlaying: boolean;
-  clickPodcastCard: (podcast: Podcast) => void;
+  clickPodcastCard: (podcast: Podcast) => Promise<void>;
   pausePodcast: () => void;
   playPodcast: () => void;
   currentTime: number;
@@ -135,9 +135,9 @@ export function AudioPlayerProvider({
           ref={audioRef}
           src={audioUrl}
           onTimeUpdate={() =>
-            setCurrentTime(audioRef.current?.currentTime || 0)
+            setCurrentTime(audioRef.current?.currentTime ?? 0)
           }
-          onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
+          onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
           onEnded={() => setIsPlaying(false)}
           onError={(e) => {
             console.error("Audio playback error:", e);
