@@ -6,10 +6,8 @@ import ListenPodcast from "@/components/listen-podcast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@clerk/nextjs";
 import LandingPage from "~/components/landing-page";
-import type { Podcast } from "@lib/types";
 
 export default function Home() {
-  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [activeTab, setActiveTab] = useState("create");
   const { isSignedIn, isLoaded } = useUser();
 
@@ -41,30 +39,9 @@ export default function Home() {
           <CreatePodcast onPodcastGenerated={handlePodcastGenerated} />
         </TabsContent>
         <TabsContent value="listen">
-          <ListenPodcast podcasts={podcasts} />
+          <ListenPodcast />
         </TabsContent>
       </Tabs>
-      {/* {data && (
-        <div className="mt-8 rounded-lg bg-gray-100 p-4">
-          <p className="text-lg">{data.greeting}</p>
-        </div>
-      )}
-      {userPodcasts && (
-        <div className="mt-8 rounded-lg bg-gray-100 p-4">
-          <div className="space-y-4">
-            {userPodcasts.map((podcast) => (
-              <div key={podcast.id} className="flex justify-between">
-                <p className="text-lg">{podcast.title}</p>
-                <p className="text-gray-600">
-                  {podcast.created_at
-                    ? new Date(podcast.created_at).toLocaleDateString()
-                    : "No date available"}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
     </main>
   );
 }

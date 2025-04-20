@@ -41,7 +41,10 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
           />
         </svg>
       </button>
-      <h3 className="text-lg font-medium">{podcast.title}</h3>
+      <div className="flex flex-col">
+        <h3 className="text-lg font-medium">{podcast.title}</h3>
+        <p className="text-sm text-gray-600">{podcast.userDescription}</p>
+      </div>
     </div>
   );
 }

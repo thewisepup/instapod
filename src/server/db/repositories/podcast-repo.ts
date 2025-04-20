@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { db } from "@/server/db";
 import { PodcastStatus, podcasts } from "../schema/podcasts";
 
@@ -7,7 +7,7 @@ export const getPodcastsByUserId = async (userId: string) => {
     .select()
     .from(podcasts)
     .where(eq(podcasts.userId, userId))
-    .orderBy(podcasts.createdAt);
+    .orderBy(desc(podcasts.createdAt));
 
   return userPodcasts;
 };
