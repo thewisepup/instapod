@@ -1,5 +1,6 @@
 import { createPodcast, getPodcastsByUserId } from "@repositories/podcast-repo";
 import { z } from "zod";
+import { invokePodcastGeneration } from "~/server/lambda/podcast-generation";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -20,7 +21,14 @@ export const podcastRouter = createTRPCRouter({
       console.log(
         `[Podcast Generation] Successfully created podcast with ID: ${podcast?.id} for user: ${ctx.auth.userId}`,
       );
+
+      if (!podcast) {
+        throw new Error("Failed to create podcast");
+      }
+
+      // Fire and forget Lambda invocation
+      void invokePodcastGeneration(podcast.id);
+
       return podcast;
-      //TODO: call serverless function to kick off podcast generation process
     }),
 });
