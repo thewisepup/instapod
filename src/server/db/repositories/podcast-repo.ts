@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, gte, sql } from "drizzle-orm";
 import { db } from "@/server/db";
 import { PodcastStatus, podcasts } from "../schema/podcasts";
 
@@ -26,4 +26,16 @@ export const createPodcast = async (
     .returning();
 
   return podcast;
+};
+
+export const getTodayPodcastCount = async (userId: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(podcasts)
+    .where(and(eq(podcasts.userId, userId), gte(podcasts.createdAt, today)));
+
+  return result[0]?.count ?? 0;
 };

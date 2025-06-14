@@ -22,6 +22,7 @@ export default function CreatePodcast({
       onPodcastGenerated();
     },
     onError: () => {
+      //TODO: add toast to handle error
       setIsGenerating(false);
     },
   });

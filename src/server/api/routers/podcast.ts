@@ -1,4 +1,5 @@
 import { createPodcast, getPodcastsByUserId } from "@repositories/podcast-repo";
+import { canCreatePodcast } from "~/server/utils/podcast-utils";
 import { z } from "zod";
 import { invokePodcastGeneration } from "~/server/lambda/podcast-generation";
 
@@ -11,6 +12,15 @@ export const podcastRouter = createTRPCRouter({
   createPodcast: protectedProcedure
     .input(z.object({ userDescription: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      // TODO: Get user tier from user service/subscription
+      const userTier = "free";
+
+      try {
+        await canCreatePodcast(ctx.auth.userId!, userTier);
+      } catch (error) {
+        throw error; // Re-throw the error to ensure it's propagated to the API response
+      }
+
       console.log(
         `[Podcast Generation] Starting generation for user: ${ctx.auth.userId}`,
       );
@@ -26,7 +36,6 @@ export const podcastRouter = createTRPCRouter({
         throw new Error("Failed to create podcast");
       }
 
-      // Fire and forget Lambda invocation
       void invokePodcastGeneration(podcast.id);
 
       return podcast;
