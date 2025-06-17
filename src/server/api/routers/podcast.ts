@@ -15,7 +15,7 @@ export const podcastRouter = createTRPCRouter({
       // TODO: Get user tier from user service/subscription
       const userTier = "free";
       await canCreatePodcast(ctx.auth.userId!, userTier);
-                                                                                                                                                                                                                                           
+
       console.log(
         `[Podcast Generation] Starting generation for user: ${ctx.auth.userId}`,
       );
@@ -31,7 +31,7 @@ export const podcastRouter = createTRPCRouter({
         throw new Error("Failed to create podcast");
       }
 
-      void invokePodcastGeneration(podcast.id);
+      await invokePodcastGeneration(podcast.id);
 
       return podcast;
     }),

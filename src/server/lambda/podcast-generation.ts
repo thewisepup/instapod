@@ -37,24 +37,17 @@ export const invokePodcastGeneration = async (podcastId: string) => {
       }),
     });
     const signedRequest = await signer.sign(request);
-    const response = await fetch(LAMBDA_URL, {
+
+    void fetch(LAMBDA_URL, {
       method: signedRequest.method,
       headers: signedRequest.headers,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       body: signedRequest.body,
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        `[Podcast Generation] Lambda returned error status: ${response.status}`,
-      );
-      console.error(`[Podcast Generation] Error response: ${errorText}`);
-      throw new Error(`Lambda returned error status: ${response.status}`);
-    }
-
+    //TODO: Add better error handling to ensure lambda function receives initial request, but doesn't wait on the response
     console.log(
-      `[Podcast Generation] Successfully sent request to Lambda for podcast ID: ${podcastId}`,
+      `[Podcast Generation] Sent request to Lambda for podcast ID: ${podcastId}`,
     );
   } catch (error) {
     console.error(
