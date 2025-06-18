@@ -5,9 +5,6 @@ import { Geist } from "next/font/google";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import { TRPCReactProvider } from "~/trpc/react";
 import SignedInHeader from "@/components/signed-in-header";
-import { SignIn } from "@/components/sign-in";
-import { SignUp } from "@/components/sign-up";
-import AppLogo from "@/components/app-logo";
 import { AudioPlayerProvider } from "@/components/audio-player";
 
 export const metadata: Metadata = {

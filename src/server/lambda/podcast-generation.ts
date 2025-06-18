@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { Sha256 } from "@aws-crypto/sha256-browser"; // Use @aws-crypto/sha256-browser for environment compatibility
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
@@ -5,9 +7,9 @@ import { HttpRequest } from "@aws-sdk/protocol-http";
 import { env } from "@/env";
 
 const credentials = await defaultProvider()();
-const PODCAST_GENERATION_LAMBDA_URL =
-  env.PODCAST_GENERATION_LAMBDA_URL as string;
-const REGION = env.AWS_REGION as string;
+
+const PODCAST_GENERATION_LAMBDA_URL = env.PODCAST_GENERATION_LAMBDA_URL;
+const REGION = env.AWS_REGION;
 
 const signer = new SignatureV4({
   credentials,
