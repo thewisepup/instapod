@@ -14,6 +14,8 @@ export const env = createEnv({
       CLERK_SECRET_KEY: z.string(),
       AWS_ACCESS_KEY_ID: z.string(),
       AWS_SECRET_ACCESS_KEY: z.string(),
+      PODCAST_GENERATION_LAMBDA_URL: z.string().url(),
+      AWS_REGION: z.string(),
   },
 
 
@@ -41,6 +43,8 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    PODCAST_GENERATION_LAMBDA_URL: process.env.PODCAST_GENERATION_LAMBDA_URL,
+    AWS_REGION: process.env.AWS_REGION,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

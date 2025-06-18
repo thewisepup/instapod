@@ -2,12 +2,12 @@ import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { Sha256 } from "@aws-crypto/sha256-browser"; // Use @aws-crypto/sha256-browser for environment compatibility
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { HttpRequest } from "@aws-sdk/protocol-http";
+import { env } from "@/env";
 
-// TODO: clean up init signer
 const credentials = await defaultProvider()();
-const LAMBDA_URL =
-  "https://vfrkclvwmcukgwgyiahwcvzpyi0nwqfu.lambda-url.us-east-1.on.aws/"; // TODO: make this an env var
-const REGION = process.env.AWS_REGION ?? "us-east-1"; // TODO: update in env
+const PODCAST_GENERATION_LAMBDA_URL =
+  env.PODCAST_GENERATION_LAMBDA_URL as string;
+const REGION = env.AWS_REGION as string;
 
 const signer = new SignatureV4({
   credentials,
@@ -17,20 +17,23 @@ const signer = new SignatureV4({
 });
 
 export const invokePodcastGeneration = async (podcastId: string) => {
-  //TODO: add check that podcastId exists
+  if (!podcastId || typeof podcastId !== "string" || podcastId.trim() === "") {
+    console.error("[Podcast Generation] Invalid podcast ID provided");
+    throw new Error("Invalid podcast ID");
+  }
   console.log(
     `[Podcast Generation] Starting Lambda invocation for podcast ID: ${podcastId}`,
   );
 
   try {
     const request = new HttpRequest({
-      hostname: new URL(LAMBDA_URL).hostname,
-      protocol: new URL(LAMBDA_URL).protocol,
-      path: new URL(LAMBDA_URL).pathname,
+      hostname: new URL(PODCAST_GENERATION_LAMBDA_URL).hostname,
+      protocol: new URL(PODCAST_GENERATION_LAMBDA_URL).protocol,
+      path: new URL(PODCAST_GENERATION_LAMBDA_URL).pathname,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Host: new URL(LAMBDA_URL).hostname,
+        Host: new URL(PODCAST_GENERATION_LAMBDA_URL).hostname,
       },
       body: JSON.stringify({
         podcast_id: podcastId,
@@ -38,7 +41,7 @@ export const invokePodcastGeneration = async (podcastId: string) => {
     });
     const signedRequest = await signer.sign(request);
 
-    void fetch(LAMBDA_URL, {
+    void fetch(PODCAST_GENERATION_LAMBDA_URL, {
       method: signedRequest.method,
       headers: signedRequest.headers,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
