@@ -23,9 +23,5 @@ export const canCreatePodcast = async (
     );
   }
 
-  // TODO: Add additional checks here:
-  // - Check if user has active subscription
-  // - Check if user has exceeded monthly limits
-  // - Check if user has any pending podcasts
-  // - Check if user has available credits
+  // Add additional checks here if needed like credit limits, good standing, etc.
 };

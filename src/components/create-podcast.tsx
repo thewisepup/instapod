@@ -15,14 +15,23 @@ export default function CreatePodcast({
 }: CreatePodcastProps) {
   const [prompt, setPrompt] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const { mutate: createPodcast } = api.podcast.createPodcast.useMutation({
     onSuccess: () => {
       setIsGenerating(false);
+      setError("");
       onPodcastGenerated();
     },
-    onError: () => {
-      //TODO: add toast to handle error
+    onError: (error) => {
+      //TODO: This is a terrible way to do error handling, adding this just for demo purposes.
+      if (error.message.includes("Daily podcast limit")) {
+        setError(
+          "You've reached the daily limit, please try again tomorrow or upgrade your plan",
+        );
+      } else {
+        setError("An error occurred while generating the podcast");
+      }
       setIsGenerating(false);
     },
   });
@@ -45,6 +54,7 @@ export default function CreatePodcast({
           onChange={(e) => setPrompt(e.target.value)}
           className="min-h-[200px]"
         />
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
 
       <Button

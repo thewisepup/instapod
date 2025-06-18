@@ -1,7 +1,7 @@
 export type UserTier = "free" | "pro" | "admin";
 
 export const tierLimits = {
-  free: Infinity, //TODO Update back to 1, doing this for debugging and testing
+  free: 1, //TODO Update back to 1, doing this for debugging and testing
   pro: 3,
   admin: Infinity,
 } as const;
