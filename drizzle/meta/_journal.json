@@ -15,6 +15,13 @@
       "when": 1744768536040,
       "tag": "0001_flaky_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750527864586,
+      "tag": "0002_puzzling_warhawk",
+      "breakpoints": true
     }
   ]
 }

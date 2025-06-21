@@ -37,5 +37,5 @@ export const transactions = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [index("user_id_idx").on(table.userId)],
+  (table) => [index("transactions_user_id_idx").on(table.userId)],
 );

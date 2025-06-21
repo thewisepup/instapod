@@ -30,5 +30,5 @@ export const podcasts = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
-  (table) => [index("user_id_idx").on(table.userId)],
+  (table) => [index("podcasts_user_id_idx").on(table.userId)],
 );
