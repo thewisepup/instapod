@@ -5,6 +5,8 @@ import { invokePodcastGeneration } from "~/server/lambda/podcast-generation";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
+const DEFAULT_PODCAST_CREDITS_COST = 1;
+
 export const podcastRouter = createTRPCRouter({
   getPodcasts: protectedProcedure.query(async ({ ctx }) => {
     return await getPodcastsByUserId(ctx.auth.userId!);
@@ -19,9 +21,11 @@ export const podcastRouter = createTRPCRouter({
       console.log(
         `[Podcast Generation] Starting generation for user: ${ctx.auth.userId}`,
       );
+      //TODO: In the future, we need to figure out how to pass the creditsCost from FE to API. Default to 1 for now
       const podcast = await createPodcast(
         ctx.auth.userId!,
         input.userDescription,
+        DEFAULT_PODCAST_CREDITS_COST,
       );
       console.log(
         `[Podcast Generation] Successfully created podcast with ID: ${podcast?.id} for user: ${ctx.auth.userId}`,

@@ -14,14 +14,16 @@ export const getPodcastsByUserId = async (userId: string) => {
 
 export const createPodcast = async (
   userId: string,
-  user_description: string,
+  userDescription: string,
+  creditsCost: number,
 ) => {
   const [podcast] = await db
     .insert(podcasts)
     .values({
       userId: userId,
-      userDescription: user_description,
+      userDescription: userDescription,
       status: PodcastStatus.GENERATING,
+      creditsCost: creditsCost,
     })
     .returning();
 
