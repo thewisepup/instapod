@@ -5,6 +5,7 @@ import {
   timestamp,
   uuid,
   index,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const PODCAST_STATUS = ["GENERATING", "READY", "FAILED"] as const;
@@ -25,6 +26,7 @@ export const podcasts = pgTable(
     status: podcastStatusEnum("status").notNull().default("GENERATING"),
     userDescription: text("user_description").notNull(),
     title: text("title"),
+    creditsCost: integer("credits_cost").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
