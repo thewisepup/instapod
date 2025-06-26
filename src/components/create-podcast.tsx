@@ -25,9 +25,9 @@ export default function CreatePodcast({
     },
     onError: (error) => {
       //TODO: This is a terrible way to do error handling, adding this just for demo purposes.
-      if (error.message.includes("Daily podcast limit")) {
+      if (error.message.includes("Insufficient credits")) {
         setError(
-          "You've reached the daily limit, please try again tomorrow or upgrade your plan",
+          "You don't have enough credits to generate a podcast. Please purchase more credits to continue.",
         );
       } else {
         setError("An error occurred while generating the podcast");

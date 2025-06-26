@@ -14,9 +14,7 @@ export const podcastRouter = createTRPCRouter({
   createPodcast: protectedProcedure
     .input(z.object({ userDescription: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      // TODO: Get user tier from user service/subscription
-      const userTier = "free";
-      await canCreatePodcast(ctx.auth.userId!, userTier);
+      await canCreatePodcast(ctx.auth.userId!, DEFAULT_PODCAST_CREDITS_COST);
 
       console.log(
         `[Podcast Generation] Starting generation for user: ${ctx.auth.userId}`,

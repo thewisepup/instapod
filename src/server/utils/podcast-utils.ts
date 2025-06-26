@@ -1,27 +1,21 @@
-import { getTodayPodcastCount } from "../db/repositories/podcast-repo";
-import type { UserTier } from "../types/tiers";
-import { tierLimits } from "../types/tiers";
+import { getUserCredits } from "../db/repositories/credits-repo";
 
 export const canCreatePodcast = async (
   userId: string,
-  tier: UserTier,
+  creditsCost: number,
 ): Promise<void> => {
-  const todayCount = await getTodayPodcastCount(userId);
-
-  const limit = tierLimits[tier];
+  const userCredits = await getUserCredits(userId);
 
   console.log(
-    `[Podcast Creation] User ${userId} (${tier} tier) has created ${todayCount} podcasts today. Limit is ${limit}.`,
+    `[Podcast Creation] User ${userId} has ${userCredits?.balance ?? 0} credits. Podcast costs ${creditsCost} credits.`,
   );
 
-  if (todayCount >= limit) {
+  if (!userCredits || userCredits.balance < creditsCost) {
     console.log(
-      `[Podcast Creation] User ${userId} has reached their daily limit of ${limit} podcasts.`,
+      `[Podcast Creation] User ${userId} has insufficient credits. Required: ${creditsCost}, Available: ${userCredits?.balance ?? 0}`,
     );
     throw new Error(
-      `Daily podcast limit of ${limit} reached for ${tier} tier. Please try again tomorrow or upgrade your plan.`,
+      `Insufficient credits. You need ${creditsCost} credits to generate a podcast, but you have ${userCredits?.balance ?? 0} credits.`,
     );
   }
-
-  // Add additional checks here if needed like credit limits, good standing, etc.
 };
