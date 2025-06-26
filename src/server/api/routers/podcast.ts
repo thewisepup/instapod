@@ -5,6 +5,7 @@ import { invokePodcastGeneration } from "~/server/lambda/podcast-generation";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { deductCredits } from "@repositories/credits-repo";
+import { recordTransaction } from "@repositories/transactions-repo";
 
 const DEFAULT_PODCAST_CREDITS_COST = 1;
 
@@ -36,6 +37,12 @@ export const podcastRouter = createTRPCRouter({
 
       await invokePodcastGeneration(podcast.id);
       await deductCredits(ctx.auth.userId!, DEFAULT_PODCAST_CREDITS_COST);
+      await recordTransaction({
+        userId: ctx.auth.userId!,
+        transactionType: "PODCAST_GENERATION",
+        amount: DEFAULT_PODCAST_CREDITS_COST * -1, // we need to record a debit and not credit here
+        description: `Generated podcast ID: ${podcast.id}`,
+      });
       return podcast;
     }),
 });
