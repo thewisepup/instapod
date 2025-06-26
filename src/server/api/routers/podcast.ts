@@ -4,6 +4,7 @@ import { z } from "zod";
 import { invokePodcastGeneration } from "~/server/lambda/podcast-generation";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { deductCredits } from "@repositories/credits-repo";
 
 const DEFAULT_PODCAST_CREDITS_COST = 1;
 
@@ -34,7 +35,7 @@ export const podcastRouter = createTRPCRouter({
       }
 
       await invokePodcastGeneration(podcast.id);
-
+      await deductCredits(ctx.auth.userId!, DEFAULT_PODCAST_CREDITS_COST);
       return podcast;
     }),
 });
