@@ -1,5 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 import AppLogo from "./app-logo";
+import CreditBalance from "./credit-balance";
 
 export default function SignedInHeader() {
   return (
@@ -9,7 +10,8 @@ export default function SignedInHeader() {
         <span className="text-2xl font-medium sm:text-4xl">InstaPod</span>
       </div>
 
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center gap-3">
+        <CreditBalance />
         <div className="scale-200">
           <UserButton />
         </div>

@@ -25,14 +25,15 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
-          <AudioPlayerProvider>
-            <SignedOut></SignedOut>
-            <SignedIn>
-              <SignedInHeader />
-            </SignedIn>
-
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </AudioPlayerProvider>
+          <TRPCReactProvider>
+            <AudioPlayerProvider>
+              <SignedOut></SignedOut>
+              <SignedIn>
+                <SignedInHeader />
+              </SignedIn>
+              {children}
+            </AudioPlayerProvider>
+          </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>
