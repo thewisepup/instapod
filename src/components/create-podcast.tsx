@@ -5,6 +5,7 @@ import { Textarea } from "./ui/textarea";
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { api } from "@/trpc/react";
+import CreditPacksModal from "@/components/credit-packs-modal";
 
 interface CreatePodcastProps {
   onPodcastGenerated: () => void;
@@ -16,6 +17,13 @@ export default function CreatePodcast({
   const [prompt, setPrompt] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>("");
+  const [isCreditModalOpen, setIsCreditModalOpen] = useState(false);
+  const [creditModalMessage, setCreditModalMessage] = useState<{
+    text: string;
+    tone?: "default" | "info" | "warning" | "error" | "success";
+  }>();
+
+  const { data: balance } = api.credits.getBalance.useQuery();
 
   const { mutate: createPodcast } = api.podcast.createPodcast.useMutation({
     onSuccess: () => {
@@ -26,9 +34,11 @@ export default function CreatePodcast({
     onError: (error) => {
       //TODO: This is a terrible way to do error handling, adding this just for demo purposes.
       if (error.message.includes("Insufficient credits")) {
-        setError(
-          "You don't have enough credits to generate a podcast. Please purchase more credits to continue.",
-        );
+        const text =
+          "Insufficient funds, please purchase more credits to continue.";
+        setError(text);
+        setCreditModalMessage({ text, tone: "error" });
+        setIsCreditModalOpen(true);
       } else {
         setError("An error occurred while generating the podcast");
       }
@@ -37,6 +47,15 @@ export default function CreatePodcast({
   });
 
   const handleGeneratePodcast = async () => {
+    // Frontend validation: if balance is 0 or less, prompt to buy credits
+    if (typeof balance === "number" && balance <= 0) {
+      setCreditModalMessage({
+        text: "Insufficient funds, please purchase more credits to continue.",
+        tone: "error",
+      });
+      setIsCreditModalOpen(true);
+      return;
+    }
     setIsGenerating(true);
     createPodcast({ userDescription: prompt });
   };
@@ -72,6 +91,12 @@ export default function CreatePodcast({
           "Generate Podcast"
         )}
       </Button>
+
+      <CreditPacksModal
+        open={isCreditModalOpen}
+        onOpenChange={setIsCreditModalOpen}
+        message={creditModalMessage}
+      />
     </div>
   );
 }
