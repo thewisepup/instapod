@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "~/trpc/react";
+import { AlertCircle } from "lucide-react";
 
 export default function CreditBalance() {
   const {
@@ -8,6 +9,8 @@ export default function CreditBalance() {
     isLoading,
     isError,
   } = api.credits.getBalance.useQuery();
+
+  const LOW_CREDITS_THRESHOLD = 2;
 
   if (isLoading) {
     return (
@@ -27,6 +30,15 @@ export default function CreditBalance() {
     >
       <span aria-hidden>🪙</span>
       <span>{balance}</span>
+      {typeof balance === "number" && balance <= LOW_CREDITS_THRESHOLD ? (
+        <span
+          className="flex items-center gap-1 text-red-600"
+          title="Low credits"
+          aria-label="Low credits"
+        >
+          <AlertCircle className="h-4 w-4" aria-hidden />
+        </span>
+      ) : null}
     </div>
   );
 }
