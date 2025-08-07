@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { api } from "@/trpc/react";
 import CreditPacksModal from "@/components/credit-packs-modal";
+import ConfirmModal from "@/components/confirm-modal";
 
 interface CreatePodcastProps {
   onPodcastGenerated: () => void;
@@ -22,6 +23,8 @@ export default function CreatePodcast({
     text: string;
     tone?: "default" | "info" | "warning" | "error" | "success";
   }>();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const creditsCost = 1; // make this configurable later
 
   const { data: balance } = api.credits.getBalance.useQuery();
 
@@ -46,9 +49,9 @@ export default function CreatePodcast({
     },
   });
 
-  const handleGeneratePodcast = async () => {
-    // Frontend validation: if balance is 0 or less, prompt to buy credits
-    if (typeof balance === "number" && balance <= 0) {
+  const handleRequestGenerate = async () => {
+    // Frontend validation: if balance is less than the cost, prompt to buy credits
+    if (typeof balance === "number" && balance < creditsCost) {
       setCreditModalMessage({
         text: "Insufficient funds, please purchase more credits to continue.",
         tone: "error",
@@ -56,6 +59,11 @@ export default function CreatePodcast({
       setIsCreditModalOpen(true);
       return;
     }
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmGenerate = () => {
+    setIsConfirmOpen(false);
     setIsGenerating(true);
     createPodcast({ userDescription: prompt });
   };
@@ -79,7 +87,7 @@ export default function CreatePodcast({
       <Button
         className="w-full"
         size="lg"
-        onClick={handleGeneratePodcast}
+        onClick={handleRequestGenerate}
         disabled={isGenerating || !prompt.trim()}
       >
         {isGenerating ? (
@@ -96,6 +104,16 @@ export default function CreatePodcast({
         open={isCreditModalOpen}
         onOpenChange={setIsCreditModalOpen}
         message={creditModalMessage}
+      />
+
+      <ConfirmModal
+        open={isConfirmOpen}
+        onOpenChange={setIsConfirmOpen}
+        creditsCost={creditsCost}
+        onConfirm={handleConfirmGenerate}
+        isConfirming={isGenerating}
+        title="Confirm podcast generation"
+        confirmLabel={`Yes, spend ${creditsCost} credit${creditsCost === 1 ? "" : "s"}`}
       />
     </div>
   );
